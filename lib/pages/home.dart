@@ -25,38 +25,42 @@ class HomePage extends StatelessWidget {
             children: [
               Container(
                 constraints: BoxConstraints(
-                  minHeight: 200, // Minimum yükseklik 100 piksel
+                  minHeight: 180, // Minimum yükseklik 100 piksel
                 ),
                 margin: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width / 20,
                 ),
-                height: MediaQuery.of(context).size.width / 4,
+                height: MediaQuery.of(context).size.width / 3.5,
                 color: Colors.transparent,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [mainMenuButton(context)],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Sipariş : 05362300400",
+                          style: TextStyle(fontSize: 12.w),
+                        ),
+                        mainMenuButton(context),
+                      ],
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height / 60),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Qr Menü", style: TextStyle(fontSize: 18.w)),
+                        Text(
+                          "Restaurant Menü",
+                          style: TextStyle(fontSize: 22.w),
+                        ),
                       ],
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height / 70),
 
-                    Text(
-                      "Sipariş : 05362300400",
-                      style: TextStyle(fontSize: 12.w),
+                    Padding(
+                      padding: EdgeInsetsGeometry.only(bottom: 20),
+                      child: Text("ANA MENU", style: TextStyle(fontSize: 15.w)),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height / 80),
-
-                    Text("ANA MENU", style: TextStyle(fontSize: 15.w)),
                   ],
                 ),
               ),
@@ -75,12 +79,7 @@ class HomePage extends StatelessWidget {
         // buraya yönlendirme veya başka işlem ekleyebilirsin
       },
       child: Container(
-        constraints: BoxConstraints(
-          maxHeight: 60,
-          maxWidth: 120,
-          minHeight: 40,
-          minWidth: 80,
-        ),
+        constraints: BoxConstraints(),
         height: MediaQuery.of(context).size.width / 14,
         width: MediaQuery.of(context).size.width / 7,
         color: Colors.black,
@@ -144,7 +143,9 @@ class HomePage extends StatelessWidget {
                 child: Center(
                   child: Text(
                     Data.categories[index],
-                    style: TextStyle(fontSize: 12.w),
+                    style: TextStyle(
+                      fontSize: (Helper.isPortreit(context) ? 12.w : 8.w),
+                    ),
                   ),
                 ),
                 width: double.infinity,

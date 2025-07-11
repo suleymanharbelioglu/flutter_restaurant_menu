@@ -31,7 +31,7 @@ class CategoryPage extends StatelessWidget {
             children: [
               Container(
                 constraints: BoxConstraints(
-                  minHeight: 200, // Minimum yükseklik 100 piksel
+                  minHeight: 180, // Minimum yükseklik 100 piksel
                 ),
                 margin: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width / 20,
@@ -41,29 +41,32 @@ class CategoryPage extends StatelessWidget {
                 color: Colors.transparent,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [backButton(context), mainMenuButton(context)],
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height / 50),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Qr Menü", style: TextStyle(fontSize: 18.w)),
+                        Text(
+                          "Restaurant Menü ",
+                          style: TextStyle(fontSize: 22.w),
+                        ),
                       ],
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height / 80),
 
-                    Text(
-                      "Sipariş : 05362300400",
-                      style: TextStyle(fontSize: 12.w),
+                    Padding(
+                      padding: EdgeInsetsGeometry.only(bottom: 20),
+
+                      child: Text(
+                        categoryTitle,
+                        style: TextStyle(fontSize: 15.w),
+                      ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height / 60),
-
-                    Text(categoryTitle, style: TextStyle(fontSize: 20.w)),
                   ],
                 ),
               ),
@@ -83,12 +86,7 @@ class CategoryPage extends StatelessWidget {
         ).push(MaterialPageRoute(builder: (context) => HomePage()));
       },
       child: Container(
-        constraints: BoxConstraints(
-          maxHeight: 60,
-          maxWidth: 120,
-          minHeight: 40,
-          minWidth: 80,
-        ),
+        constraints: BoxConstraints(),
         height: MediaQuery.of(context).size.width / 14,
         width: MediaQuery.of(context).size.width / 7,
         color: Colors.black,
@@ -97,7 +95,7 @@ class CategoryPage extends StatelessWidget {
           "Ana Menü",
           style: TextStyle(
             color: Colors.white,
-            fontSize: 12,
+            fontSize: 8.w,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -111,12 +109,7 @@ class CategoryPage extends StatelessWidget {
         Navigator.of(context).pop();
       },
       child: Container(
-        constraints: BoxConstraints(
-          maxHeight: 60,
-          maxWidth: 120,
-          minHeight: 40,
-          minWidth: 80,
-        ),
+        constraints: BoxConstraints(),
         height: MediaQuery.of(context).size.width / 14,
         width: MediaQuery.of(context).size.width / 7,
         color: Colors.black,
@@ -124,13 +117,13 @@ class CategoryPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.arrow_back_ios, color: Colors.white, size: 10),
-            SizedBox(width: MediaQuery.of(context).size.width / 70),
+            Icon(Icons.arrow_back_ios, color: Colors.white, size: 10.w),
+            SizedBox(width: MediaQuery.of(context).size.width / 120),
             Text(
               "Geri",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 12,
+                fontSize: 8.w,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -179,7 +172,14 @@ class CategoryPage extends StatelessWidget {
                   flex: 1,
                   child: Container(
                     color: Colors.black,
-                    child: Center(child: Text(foodList[index].name)),
+                    child: Center(
+                      child: Text(
+                        foodList[index].name,
+                        style: TextStyle(
+                          fontSize: (Helper.isPortreit(context) ? 12.w : 8.w),
+                        ),
+                      ),
+                    ),
                     width: double.infinity,
                   ),
                 ),
@@ -250,13 +250,13 @@ class CategoryPage extends StatelessWidget {
                         food.name,
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 18,
+                          fontSize: 18.w,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       GestureDetector(
                         onTap: () => Navigator.of(context).pop(),
-                        child: Icon(Icons.close),
+                        child: Icon(Icons.close, size: 22.w),
                       ),
                     ],
                   ),
@@ -264,7 +264,10 @@ class CategoryPage extends StatelessWidget {
                   SizedBox(height: 16),
 
                   // Bilgiler
-                  Text(food.description, style: TextStyle(color: Colors.black)),
+                  Text(
+                    food.description,
+                    style: TextStyle(color: Colors.black, fontSize: 14.w),
+                  ),
 
                   SizedBox(height: 16),
 
@@ -316,7 +319,7 @@ class CategoryPage extends StatelessWidget {
                               food.name,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 18,
+                                fontSize: 16.w,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -332,7 +335,7 @@ class CategoryPage extends StatelessWidget {
                         // Açıklama
                         Text(
                           food.description,
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.black, fontSize: 12.w),
                         ),
                       ],
                     ),
