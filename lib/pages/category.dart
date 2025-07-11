@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:restaurant_menu2/assets/app_images.dart';
+import 'package:restaurant_menu2/helper/helper.dart';
 import 'package:restaurant_menu2/models/food.dart';
 import 'package:restaurant_menu2/pages/home.dart';
 
@@ -14,7 +16,7 @@ class CategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.yellow,
+      backgroundColor: Colors.transparent,
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -28,8 +30,14 @@ class CategoryPage extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                height: 200,
+                constraints: BoxConstraints(
+                  minHeight: 200, // Minimum yükseklik 100 piksel
+                ),
+                margin: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 20,
+                ),
+                height: MediaQuery.of(context).size.width / 4,
+
                 color: Colors.transparent,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,24 +47,27 @@ class CategoryPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [backButton(context), mainMenuButton(context)],
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: MediaQuery.of(context).size.height / 50),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Zeytin konağı", style: TextStyle(fontSize: 30)),
+                        Text("Qr Menü", style: TextStyle(fontSize: 18.w)),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: MediaQuery.of(context).size.height / 80),
 
-                    Text("Sipariş : 05362300400"),
-                    SizedBox(height: 15),
+                    Text(
+                      "Sipariş : 05362300400",
+                      style: TextStyle(fontSize: 12.w),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height / 60),
 
-                    Text(categoryTitle, style: TextStyle(fontSize: 20)),
+                    Text(categoryTitle, style: TextStyle(fontSize: 20.w)),
                   ],
                 ),
               ),
-              categoryMenuList(),
+              categoryMenuList(context),
             ],
           ),
         ),
@@ -72,8 +83,14 @@ class CategoryPage extends StatelessWidget {
         ).push(MaterialPageRoute(builder: (context) => HomePage()));
       },
       child: Container(
-        height: 30,
-        width: 90,
+        constraints: BoxConstraints(
+          maxHeight: 60,
+          maxWidth: 120,
+          minHeight: 40,
+          minWidth: 80,
+        ),
+        height: MediaQuery.of(context).size.width / 14,
+        width: MediaQuery.of(context).size.width / 7,
         color: Colors.black,
         alignment: Alignment.center,
         child: Text(
@@ -94,15 +111,21 @@ class CategoryPage extends StatelessWidget {
         Navigator.of(context).pop();
       },
       child: Container(
-        height: 30,
-        width: 70,
+        constraints: BoxConstraints(
+          maxHeight: 60,
+          maxWidth: 120,
+          minHeight: 40,
+          minWidth: 80,
+        ),
+        height: MediaQuery.of(context).size.width / 14,
+        width: MediaQuery.of(context).size.width / 7,
         color: Colors.black,
         alignment: Alignment.center,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.arrow_back_ios, color: Colors.white, size: 10),
-            SizedBox(width: 3),
+            SizedBox(width: MediaQuery.of(context).size.width / 70),
             Text(
               "Geri",
               style: TextStyle(
@@ -111,25 +134,29 @@ class CategoryPage extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(width: 5),
+            SizedBox(width: MediaQuery.of(context).size.width / 50),
           ],
         ),
       ),
     );
   }
 
-  Widget categoryMenuList() {
+  Widget categoryMenuList(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+      padding: EdgeInsets.only(
+        left: MediaQuery.of(context).size.width / 20,
+        right: MediaQuery.of(context).size.width / 20,
+        bottom: MediaQuery.of(context).size.height / 20,
+      ),
 
       child: GridView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemCount: foodList.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisSpacing: 40,
-          mainAxisSpacing: 20,
-          crossAxisCount: 2,
+          crossAxisSpacing: MediaQuery.of(context).size.width / 20,
+          mainAxisSpacing: MediaQuery.of(context).size.height / 20,
+          crossAxisCount: Helper.isPortreit(context) ? 2 : 3,
         ),
         itemBuilder: (context, index) {
           return categoryMenuItem(index, context);
@@ -175,8 +202,12 @@ class CategoryPage extends StatelessWidget {
             bottom: 0,
             right: 0,
             child: Container(
-              height: 30,
-              width: 60,
+              height:
+                  MediaQuery.of(context).size.width /
+                  (Helper.isPortreit(context) ? 18 : 24),
+              width:
+                  MediaQuery.of(context).size.width /
+                  (Helper.isPortreit(context) ? 9 : 12),
               color: Colors.red,
               child: Center(
                 child: Text(foodList[index].price.toString() + "₺"),
@@ -189,6 +220,12 @@ class CategoryPage extends StatelessWidget {
   }
 
   Future<dynamic> foodDetails(BuildContext context, FoodModel food) {
+    return Helper.isPortreit(context)
+        ? portreitFoodDetails(context, food)
+        : landscapeFoodDetails(context, food);
+  }
+
+  Future<dynamic> portreitFoodDetails(BuildContext context, FoodModel food) {
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -234,7 +271,79 @@ class CategoryPage extends StatelessWidget {
                   // Mavi 100x100 Container
                   Container(
                     width: double.infinity,
-                    height: 400,
+                    height: MediaQuery.of(context).size.height / 2,
+                    color: Colors.blue,
+                    child: Image.asset(
+                      AppImages.basePath + food.photoAddress.toString(),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<dynamic> landscapeFoodDetails(BuildContext context, FoodModel food) {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: SingleChildScrollView(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Sol: Yazılar
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Başlık ve Kapatma İkonu
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              food.name,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => Navigator.of(context).pop(),
+                              child: Icon(Icons.close),
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(height: 16),
+
+                        // Açıklama
+                        Text(
+                          food.description,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(width: 16),
+
+                  // Sağ: Görsel
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.5,
                     color: Colors.blue,
                     child: Image.asset(
                       AppImages.basePath + food.photoAddress.toString(),
